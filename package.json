@@ -25,7 +25,7 @@
     "clean": "tsc --build --clean",
     "prepublishOnly": "npm run build"
   },
-  "author": "Funmula Corp<info@funmula.com>",
+  "author": "Funmula Corp.",
   "license": "MIT",
   "engines": {
     "node": ">=16.0.0"
