@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "sourceMap": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "target": "esnext",
     "lib": ["ESNext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,12 +24,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "lib/*"
       ]
     }
   },
   "include": [
-    "**/*.ts"
+    "lib/**/*.ts"
   ],
   "exclude": [
     "node_modules"
