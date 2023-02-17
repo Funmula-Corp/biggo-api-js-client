@@ -1,0 +1,1 @@
+export const BIGGO_AUTH_JWT_ENDPOINT = "/auth/v1/token"
