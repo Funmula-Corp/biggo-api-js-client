@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "importHelpers": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
