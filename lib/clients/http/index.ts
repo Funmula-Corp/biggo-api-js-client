@@ -1,5 +1,6 @@
 import { DataType, DeleteRequestParams, GetRequestParams, Headers, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams } from "./types"
 import fetch, { Headers as Header } from "node-fetch"
+import FormData from 'form-data'
 
 export class HttpClient {
   // 1 second
@@ -64,21 +65,36 @@ export class HttpClient {
       if (data) {
         switch (type) {
           case DataType.JSON:
-            body = typeof data === 'string' ? data : JSON.stringify(data)
+            body = typeof data === "string" ? data : JSON.stringify(data)
             break
           case DataType.URLEncoded:
             body =
-              typeof data === 'string'
+              typeof data === "string"
                 ? data
                 : new URLSearchParams(
                   data as { [key: string]: string },
                 ).toString()
             break
+          case DataType.MultipartFormData:
+            if(typeof data === "string") {
+              body = data
+              break
+            }
+
+            const form = new FormData()
+            for (const key in data) {
+              form.append(key, data[key] as string)
+            }
+
+            body = form
+            break
         }
         headers = {
           ...headers,
-          'Content-Type': type!,
-          'Content-Length': new TextEncoder().encode(body).length,
+        }
+
+        if(type !== DataType.MultipartFormData) {
+          headers["Content-Type"] = type!
         }
       }
     }
@@ -107,19 +123,19 @@ export class HttpClient {
           continue
         }
 
-        // We're set to multiple tries but ran out
+        // We"re set to multiple tries but ran out
         if (maxTries > 1) {
           throw new Error(
             `Exceeded maximum retry count of ${maxTries}. Last message: ${error.message}`,
           )
         }
 
-        // We're not retrying or the error is not retriable, rethrow
+        // We"re not retrying or the error is not retriable, rethrow
         throw error
       }
     }
 
-    // We're never supposed to come this far, this is here only for the benefit of Typescript
+    // We"re never supposed to come this far, this is here only for the benefit of Typescript
     /* istanbul ignore next */
     throw new Error(
       `Unexpected flow, reached maximum HTTP tries but did not throw an error`,
@@ -127,7 +143,7 @@ export class HttpClient {
   }
 
   protected getRequestPath(path: string): string {
-    return `/${path.replace(/^\//, '')}`
+    return `/${path.replace(/^\//, "")}`
   }
 
   private httpClass() {
@@ -148,8 +164,10 @@ export class HttpClient {
 
   private async doRequest<T = unknown>(request: NormalizedRequest): Promise<T> {
     const headers = this.getHeader(request.headers)
+
     const response = await fetch(request.url, {
       ...request,
+      body: request.body as string,
       headers
     })
 

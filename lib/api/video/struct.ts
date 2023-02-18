@@ -1,4 +1,4 @@
-import { VideoPermission, VideoProcessStatus } from "./types"
+import { VideoVisibility, VideoProcessStatus } from "./types"
 
 export interface VideoUserInfo {
   profileimg: string
@@ -67,7 +67,7 @@ export interface BigGoVideo {
   timestamp: number
   url: string
   description: string
-  limit: VideoPermission
+  limit: VideoVisibility
   video_comment_count: number
   video_like_count: number
   view_count: number

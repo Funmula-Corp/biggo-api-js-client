@@ -1,3 +1,5 @@
+import FormData from "form-data"
+
 export enum Method {
   Get = "GET",
   Post = "POST",
@@ -55,5 +57,5 @@ export interface NormalizedRequest {
   method: string
   url: string
   headers: Headers
-  body?: string
+  body?: string | FormData
 }

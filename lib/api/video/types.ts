@@ -6,22 +6,26 @@ export enum VideoProcessStatus {
   COMPLETE = 13
 }
 
-export enum VideoPermission {
+export enum VideoVisibility {
   Everyone = "everyone",
   Myself = "limit_myself",
-  Private = "non_public",
+  NonPublic = "non_public",
 }
 
 export type VideoUpdateParams = {
   description?: string
-  limit?: VideoPermission
-  product_list?: {
+  limit?: VideoVisibility
+  products?: {
     nindex: string,
     oid: string,
   }[]
 
   /** thumbnail screenshot time(ms) */
-  "thumbnail-ts"?: number
+  thumbnailTime ?: number
+}
+
+export type VideoUploadParams = Required<VideoUpdateParams> & {
+  file: string
 }
 
 export type VideoResponse = BaseResponse & {
@@ -29,4 +33,9 @@ export type VideoResponse = BaseResponse & {
   user: VideoUserInfo
   video: BigGoVideo[]
   size: number
+}
+
+export type VideoUploadResponse = BaseResponse & {
+  result: true,
+  video_id: string
 }
