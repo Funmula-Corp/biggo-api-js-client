@@ -19,6 +19,10 @@ Using pnpm
 pnpm add biggo-api
 ```
 
+## Requirement
+
+* Nodejs >= 16
+
 ## Usage
 
 Using ESM:
