@@ -46,7 +46,7 @@ const info = await video.get("<video id>")
 
 |scope||
 |:---:|---|
-|/video|[Video Api Client](./lib/api#readme)|
+|/video|[Video Api Client](./lib/api/video#readme)|
 
 ## License
 
