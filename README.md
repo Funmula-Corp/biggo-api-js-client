@@ -33,7 +33,7 @@ const { auth, api } = require("biggo-api")
 
 Use api client:
 ```js
-const client = new auth.JWT.BigGoJWTClient({
+const client = auth.getJWTClient({
   apiKey: "<api key>",
   apiSecretKey: "<api secret>"
 })
