@@ -50,7 +50,7 @@ video.upload({
 
 `[Options]`
 
-|fields|required|type|description|
+||required|type|description|
 |:---:|:---:|:---:|:---:|
 |file|✔️|string|video file path|
 |description|✔️|string|video description|
@@ -78,7 +78,7 @@ video.update("<video id>", {
 
 `[Options]`
 
-|fields|required|type|description|
+||required|type|description|
 |:---:|:---:|:---:|:---:|
 |description| |string|video description|
 |limit| |`everyone`, `my_self`, `non_public`|video visibility setting|
