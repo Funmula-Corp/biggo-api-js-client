@@ -16,29 +16,35 @@ export class APIVideoClient extends APIClient {
    * Get video info with video id
    */
   async get(id: string) {
-    return this.client.get<VideoResponse>({
+    const { video } = await this.client.get<VideoResponse>({
       path: this.getRequestPath(id)
     })
+
+    return video.length ? video[0] : undefined
   }
 
   /**
    * Update video properties
    */
   async update(id: string, params: VideoUpdateParams) {
-    return this.client.patch<BaseResponse>({
-      path: this.getRequestPath(id),
-      data: this.mappingEditFields(params),
-      type: DataType.JSON
-    })
+    return this.resolveBaseResponse(
+      await this.client.patch<BaseResponse>({
+        path: this.getRequestPath(id),
+        data: this.mappingEditFields(params),
+        type: DataType.JSON
+      })
+    )
   }
 
   /**
    * Delete the video if the api token owner owns it
    */
   async delete(id: string) {
-    return this.client.delete<BaseResponse>({
-      path: this.getRequestPath(id)
-    })
+    return this.resolveBaseResponse(
+      await this.client.delete<BaseResponse>({
+        path: this.getRequestPath(id)
+      })
+    )
   }
 
   /**
@@ -61,10 +67,16 @@ export class APIVideoClient extends APIClient {
     }
 
     // edit video data
-    return this.client.post<BaseResponse>({
+    const res = await this.client.post<BaseResponse>({
       path: this.getRequestPath(body.video_id),
       data: this.mappingEditFields(params)
     })
+
+    if(!res) {
+      throw new Error("video upload fail.")
+    }
+
+    return body.video_id
   }
 
   private mappingEditFields(params: VideoUpdateParams) {

@@ -1,5 +1,5 @@
 import { HttpClient } from "../clients/http"
-import type { APIClientConfiguration } from "./types"
+import type { APIClientConfiguration, BaseResponse } from "./types"
 
 export class APIClient {
   static readonly PATH = "/api/v1"
@@ -18,6 +18,10 @@ export class APIClient {
 
   protected fixRequestPath(path: string): string {
     return `/${path.replace(/^\//, '')}`
+  }
+
+  protected resolveBaseResponse(res: BaseResponse): boolean {
+    return res.result
   }
 
   private httpClass() {
