@@ -28,6 +28,8 @@ get a video information.
 video.get("<video id>")
 ```
 
+---
+
 ### Create
 
 Upload new video.
@@ -56,8 +58,11 @@ video.upload({
 |products|✔️|list of {nindex: string, oid: string}|relation product list with video|
 |thumbnailTime|✔️|number|micro second of thumbnail in video|
 
+---
 
 ### Update
+
+Update video info.
 
 `video.upload(<video id>, [Options])`
 * Return: `Promise<boolean>` `true` if updated success
@@ -80,7 +85,10 @@ video.update("<video id>", {
 |products| |list of {nindex: string, oid: string}|relation product list with video|
 |thumbnailTime| |number|micro second of thumbnail in video|
 
+---
 ### Delete
+
+Remove video.
 
 `video.delete(<video id>)`
 * Return: `Promise<boolean>` `true` if updated success
