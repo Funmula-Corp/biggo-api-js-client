@@ -91,7 +91,7 @@ video.update("<video id>", {
 Remove video.
 
 `video.delete(<video id>)`
-* Return: `Promise<boolean>` `true` if updated success
+* Return: `Promise<boolean>` `true` if removed success
 
 ```js
 video.delete("<video id>")
