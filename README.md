@@ -42,6 +42,12 @@ const video = api.video({ client })
 const info = await video.get("<video id>")
 ```
 
+## Document
+
+|scope||
+|:---:|---|
+|/video|[Video Api Client](./lib/api#readme)|
+
 ## License
 
 MIT
