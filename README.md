@@ -18,3 +18,30 @@ Using pnpm
 ```shell
 pnpm add biggo-api
 ```
+
+## Usage
+
+Using ESM:
+```js
+import { auth, api } from "biggo-api"
+```
+
+Using CJS:
+```js
+const { auth, api } = require("biggo-api")
+```
+
+Use api client:
+```js
+const client = new auth.JWT.BigGoJWTClient({
+  apiKey: "<api key>",
+  apiSecretKey: "<api secret>"
+})
+
+const video = api.video({ client })
+const info = await video.get("<video id>")
+```
+
+## License
+
+MIT
