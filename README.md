@@ -31,7 +31,8 @@ Using CJS:
 const { auth, api } = require("biggo-api")
 ```
 
-Use api client:
+### Quick start
+
 ```js
 const client = auth.getJWTClient({
   apiKey: "<api key>",
