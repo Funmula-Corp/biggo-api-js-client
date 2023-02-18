@@ -1,4 +1,4 @@
-import { DataType, DeleteRequestParams, GetRequestParams, Headers, Method, NormalizedRequest, PostRequestParams, PutRequestParams, RequestParams } from "./types"
+import { DataType, DeleteRequestParams, GetRequestParams, Headers, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams } from "./types"
 import fetch, { Headers as Header } from "node-fetch"
 
 export class HttpClient {
@@ -33,6 +33,13 @@ export class HttpClient {
   }
 
   /**
+   * Performs a PATCH request on the given path.
+   */
+  public async patch<T = unknown>(params: PatchRequestParams) {
+    return this.request<T>({ method: Method.Patch, ...params })
+  }
+
+  /**
    * Performs a DELETE request on the given path.
    */
   public async delete<T = unknown>(params: DeleteRequestParams) {
@@ -51,7 +58,7 @@ export class HttpClient {
       ...params.extraHeaders,
     }
     let body
-    if (params.method === Method.Post || params.method === Method.Put) {
+    if (params.method === Method.Post || params.method === Method.Put || params.method === Method.Patch) {
       const type = (params as PostRequestParams).type ?? DataType.JSON
       const data = (params as PostRequestParams).data
       if (data) {
@@ -76,7 +83,7 @@ export class HttpClient {
       }
     }
 
-    const url = `${params.hostname || this.hostname}/${this.getRequestPath(params.path)}`
+    const url = `${params.hostname || this.hostname}${this.getRequestPath(params.path)}`
     const request: NormalizedRequest = {
       method: params.method,
       url,
@@ -130,9 +137,9 @@ export class HttpClient {
   private getHeader(headers: Headers) {
     const h = new Header()
     Object.keys(headers).forEach(k => {
-      const value = typeof headers[k] === "string"
-        ? headers[k] as string
-        : (headers[k] as string[]).join(",")
+      const value = Array.isArray(headers[k])
+        ? (headers[k] as string[]).join(",")
+        : headers[k] as string
       h.set(k, value)
     })
 

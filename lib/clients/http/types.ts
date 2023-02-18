@@ -2,6 +2,7 @@ export enum Method {
   Get = "GET",
   Post = "POST",
   Put = "PUT",
+  Patch = "PATCH",
   Delete = "DELETE"
 }
 
@@ -35,6 +36,8 @@ export interface GetRequestParams {
 export type PostRequestParams = GetRequestParams & {
   data: { [key: string]: unknown } | string
 }
+
+export type PatchRequestParams = PostRequestParams
 
 export type PutRequestParams = PostRequestParams
 

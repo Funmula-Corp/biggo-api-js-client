@@ -8,24 +8,19 @@
     "declaration": true,
     "declarationMap": true,
     "target": "esnext",
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "esModuleInterop": true,
-    "module": "CommonJS",
+    "module": "nodenext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "lib/*"
-      ]
-    }
+    "baseUrl": "."
   },
   "include": [
     "lib/**/*.ts"

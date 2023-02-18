@@ -1,5 +1,5 @@
-import { HttpClient } from "@/clients/http"
-import { DataType, PostRequestParams, RequestParams } from "@/clients/http/types"
+import { HttpClient } from "../../clients/http"
+import { DataType, Method, PostRequestParams, RequestParams } from "../../clients/http/types"
 import { BIGGO_AUTH_JWT_ENDPOINT } from "./endpoint"
 import type { BigGoJWTClientInitialParams, JWTAuthResponse } from "./types"
 
@@ -55,7 +55,7 @@ export class BigGoJWTClient extends HttpClient {
       }
     }
 
-    const response = await super.post<JWTAuthResponse>(params)
+    const response = await super.request<JWTAuthResponse>({ method: Method.Post, ...params })
     if ("error" in response) {
       throw new Error(response.error === "invalid_request" ? "invalid credential" : response.error)
     }
@@ -73,10 +73,11 @@ export class BigGoJWTClient extends HttpClient {
   }
 
   protected async request<T = unknown>(params: RequestParams): Promise<T> {
-    if (params.extraHeaders) {
-      params.extraHeaders["Authorization"] = `${this.getTokenType()} ${await this.getToken()}`
+    if (!params.extraHeaders) {
+      params.extraHeaders = {}
     }
 
+    params.extraHeaders["Authorization"] = `${this.getTokenType()} ${await this.getToken()}`
     return super.request<T>(params)
   }
 }

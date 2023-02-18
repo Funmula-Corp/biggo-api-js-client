@@ -9,16 +9,6 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./api/*": {
-      "import": "./lib/api/*/index.js",
-      "require": "./lib/api/*/index.js",
-      "types": "./lib/api/*/index.d.ts"
-    },
-    "./jwt": {
-      "import": "./lib/auth/jwt/index.js",
-      "require": "./lib/auth/jwt/index.js",
-      "types": "./lib/auth/jwt/index.d.ts"
     }
   },
   "files": [
@@ -31,6 +21,7 @@
   "scripts": {
     "ts": "dotenv -e .env.local -e .env -- ts-node --esm --experimental-specifier-resolution=node",
     "build": "dotenv -e .env -- tsc && dotenv -e .env -- node utils/replace-variable.cjs",
+    "build:dev": "dotenv -e .env.local -e .env -- tsc && dotenv -e .env.local -e .env -- node utils/replace-variable.cjs",
     "clean": "tsc --build --clean",
     "prepublishOnly": "npm run build"
   },
@@ -41,7 +32,8 @@
   },
   "dependencies": {
     "@types/node": "^18.13.0",
-    "node-fetch": "^3.3.0"
+    "@types/node-fetch": "^2.6.2",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
