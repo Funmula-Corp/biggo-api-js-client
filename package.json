@@ -4,6 +4,7 @@
   "description": "biggo api client for node js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "repository": "github:Funmula-Corp/biggo-api-js-client",
   "exports": {
     ".": {
       "require": "./lib/index.js",
