@@ -53,6 +53,7 @@ video.upload({
 ||required|type|description|
 |:---:|:---:|:---:|:---:|
 |file|✔️|string|video file path|
+|title|️️️️️️️️✔️|string|video title|
 |description|✔️|string|video description|
 |limit|✔️|`everyone` `limit_myself` `non_public`|video visibility setting|
 |products|✔️|list of {nindex: string, oid: string}|relation product list with video|
@@ -80,6 +81,7 @@ video.update("<video id>", {
 
 ||required|type|description|
 |:---:|:---:|:---:|:---:|
+|title|️️️️️️️️ |string|video title|
 |description| |string|video description|
 |limit| |`everyone` `limit_myself` `non_public`|video visibility setting|
 |products| |list of {nindex: string, oid: string}|relation product list with video|

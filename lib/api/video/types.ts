@@ -13,6 +13,7 @@ export enum VideoVisibility {
 }
 
 export type VideoUpdateParams = {
+  title?: string
   description?: string
   limit?: VideoVisibility | "everyone" | "limit_myself" | "non_public"
   products?: {
@@ -33,6 +34,10 @@ export type VideoResponse = BaseResponse & {
   user: VideoUserInfo
   video: BigGoVideo[]
   size: number
+}
+
+export type AVideoInfo = BigGoVideo & {
+  user: VideoUserInfo
 }
 
 export type VideoUploadResponse = BaseResponse & {
