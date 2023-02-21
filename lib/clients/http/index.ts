@@ -1,11 +1,9 @@
-import { DataType, DeleteRequestParams, GetRequestParams, Headers, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams } from "./types"
+import { DataType, DeleteRequestParams, ErrorResponse, GetRequestParams, Headers, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams, RequestReturn } from "./types"
 import fetch, { Headers as Header } from "node-fetch"
 import FormData from 'form-data'
+import { BigGoAPIError } from "../../error"
 
 export class HttpClient {
-  // 1 second
-  static readonly RETRY_WAIT_TIME = 1000
-
   readonly hostname: string
 
   constructor(hostname: string) {
@@ -47,17 +45,8 @@ export class HttpClient {
     return this.request<T>({ method: Method.Delete, ...params })
   }
 
-  protected async request<T = unknown>(params: RequestParams): Promise<T> {
-    const maxTries = params.tries ? params.tries : 1
-    if (maxTries <= 0) {
-      throw new Error(
-        `Number of tries must be >= 0, got ${maxTries}`,
-      )
-    }
-
-    let headers: typeof params.extraHeaders = {
-      ...params.extraHeaders,
-    }
+  protected async request<T = unknown>(params: RequestParams): Promise<RequestReturn<T>> {
+    let headers: typeof params.extraHeaders = { ...params.extraHeaders }
     let body
     if (params.method === Method.Post || params.method === Method.Put || params.method === Method.Patch) {
       const type = (params as PostRequestParams).type ?? DataType.JSON
@@ -107,47 +96,11 @@ export class HttpClient {
       body,
     }
 
-    async function sleep(waitTime: number): Promise<void> {
-      return new Promise((resolve) => setTimeout(resolve, waitTime))
-    }
-
-    let tries = 0
-    while (tries < maxTries) {
-      try {
-        return await this.doRequest<T>(request)
-      } catch (error: any) {
-        tries++
-        if (tries < maxTries) {
-          let waitTime = this.httpClass().RETRY_WAIT_TIME
-          await sleep(waitTime)
-          continue
-        }
-
-        // We"re set to multiple tries but ran out
-        if (maxTries > 1) {
-          throw new Error(
-            `Exceeded maximum retry count of ${maxTries}. Last message: ${error.message}`,
-          )
-        }
-
-        // We"re not retrying or the error is not retriable, rethrow
-        throw error
-      }
-    }
-
-    // We"re never supposed to come this far, this is here only for the benefit of Typescript
-    /* istanbul ignore next */
-    throw new Error(
-      `Unexpected flow, reached maximum HTTP tries but did not throw an error`,
-    )
+    return await this.doRequest<T>(request)
   }
 
   protected getRequestPath(path: string): string {
     return `/${path.replace(/^\//, "")}`
-  }
-
-  private httpClass() {
-    return this.constructor as typeof HttpClient
   }
 
   private getHeader(headers: Headers) {
@@ -162,7 +115,7 @@ export class HttpClient {
     return h
   }
 
-  private async doRequest<T = unknown>(request: NormalizedRequest): Promise<T> {
+  private async doRequest<T = unknown>(request: NormalizedRequest): Promise<RequestReturn<T>> {
     const headers = this.getHeader(request.headers)
 
     const response = await fetch(request.url, {
@@ -170,10 +123,6 @@ export class HttpClient {
       body: request.body as string,
       headers
     })
-
-    if(!response.ok) {
-      throw new Error(`API Request fail`)
-    }
 
     let body: { [key: string]: string } | string | T = {}
     let content = await response.text()
@@ -185,6 +134,15 @@ export class HttpClient {
       }
     }
 
-    return body as T
+    if ("error" in (body as any)) {
+      throw new BigGoAPIError(body as ErrorResponse)
+    } else if (!response.ok) {
+      throw new Error("BigGo API Error")
+    }
+
+    return {
+      body: body as T,
+      headers: response.headers
+    }
   }
 }

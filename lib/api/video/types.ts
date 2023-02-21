@@ -1,4 +1,4 @@
-import { BaseResponse } from "../types"
+import { BaseResponse } from "../../clients/http/types"
 import { BigGoVideo, VideoUserInfo } from "./struct"
 
 export enum VideoProcessStatus {

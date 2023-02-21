@@ -88,7 +88,7 @@ export interface BigGoVideo {
     download: {
       mp4: string
     }
-  },
+  }
   is_follow: boolean
   profileimg: string
   name: string

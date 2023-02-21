@@ -1,29 +1,30 @@
 import { HttpClient } from "../../clients/http"
-import { DataType, Method, PostRequestParams, RequestParams } from "../../clients/http/types"
+import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "../../clients/http/types"
+import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
 import { BIGGO_AUTH_JWT_ENDPOINT } from "./endpoint"
 import type { BigGoJWTClientInitialParams, JWTAuthResponse } from "./types"
 
 export class BigGoJWTClient extends HttpClient {
-  #apiKey: string
-  #apiSecretKey: string
+  #clientId: string
+  #clientSecret: string
 
   #token: string = ""
   #tokenType: string = "Bearer"
   #tokenExpires: number = 0
 
-  constructor({ apiKey, apiSecretKey }: BigGoJWTClientInitialParams) {
+  constructor({ client_id, client_secret }: BigGoJWTClientInitialParams) {
     super(process.env.API_DOMAIN!)
-    this.#apiKey = apiKey
-    this.#apiSecretKey = apiSecretKey
+    this.#clientId = client_id
+    this.#clientSecret = client_secret
   }
 
   public apiKey(apiKey: string): this {
-    this.#apiKey = apiKey
+    this.#clientId = apiKey
     return this
   }
 
   public apiSecretKey(apiSecretKey: string): this {
-    this.#apiSecretKey = apiSecretKey
+    this.#clientSecret = apiSecretKey
     return this
   }
 
@@ -44,7 +45,7 @@ export class BigGoJWTClient extends HttpClient {
   }
 
   protected async auth() {
-    const auth = Buffer.from(`${this.#apiKey}:${this.#apiSecretKey}`).toString('base64')
+    const auth = Buffer.from(`${this.#clientId}:${this.#clientSecret}`).toString('base64')
     const params: PostRequestParams = {
       data: { grant_type: "client_credentials" },
       hostname: process.env.API_AUTH_DOMAIN,
@@ -55,7 +56,7 @@ export class BigGoJWTClient extends HttpClient {
       }
     }
 
-    const response = await super.request<JWTAuthResponse>({ method: Method.Post, ...params })
+    const { body: response } = await super.request<JWTAuthResponse>({ method: Method.Post, ...params })
     if ("error" in response) {
       throw new Error(response.error === "invalid_request" ? "invalid credential" : response.error)
     }
@@ -72,12 +73,29 @@ export class BigGoJWTClient extends HttpClient {
     return this.auth()
   }
 
-  protected async request<T = unknown>(params: RequestParams): Promise<T> {
+  protected async request<T = unknown>(params: RequestParams): Promise<RequestReturn<T>> {
     if (!params.extraHeaders) {
       params.extraHeaders = {}
     }
 
     params.extraHeaders["Authorization"] = `${this.getTokenType()} ${await this.getToken()}`
-    return super.request<T>(params)
+
+    try {
+      return await super.request<T>(params)
+    } catch(error: any) {
+      if(!(error instanceof BigGoAPIError)) {
+        throw error
+      }
+
+      switch((error as BigGoAPIError).code) {
+        case BigGoAPIErrorEnum.JWT_EXPIRED:
+          await this.renew()
+          return super.request<T>(params)
+        case BigGoAPIErrorEnum.JWT_INVALID:
+          throw new Error("BigGo JWT Client error: invalid client credential")
+      }
+    }
+
+    throw new Error("BigGo JWT Client Unknown error")
   }
 }

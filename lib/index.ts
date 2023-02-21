@@ -3,3 +3,4 @@ export * as auth from "./auth"
 export * as api from "./api"
 
 export { VideoProcessStatus, VideoVisibility } from "./api/video/types"
+export { BigGoAPIErrorEnum } from "./error"

@@ -7,6 +7,6 @@ export type JWTAuthResponse = JWTErrorResponse | {
 export type JWTErrorResponse = { error: string }
 
 export interface BigGoJWTClientInitialParams {
-  apiKey: string
-  apiSecretKey: string
+  client_id: string
+  client_secret: string
 }

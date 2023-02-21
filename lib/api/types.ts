@@ -9,5 +9,3 @@ export type APIClientRequired = {
 }
 
 export type APIClientConfiguration = APIClientAbstractParams & APIClientRequired
-
-export type BaseResponse = { result: true } | { result: false, error: string }

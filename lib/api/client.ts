@@ -1,5 +1,6 @@
 import { HttpClient } from "../clients/http"
-import type { APIClientConfiguration, BaseResponse } from "./types"
+import { RequestReturn, BaseResponse } from "../clients/http/types"
+import type { APIClientConfiguration } from "./types"
 
 export class APIClient {
   static readonly PATH = "/api/v1"
@@ -13,15 +14,19 @@ export class APIClient {
   }
 
   protected getRequestPath(id?: string) {
-    return this.httpClass().PATH + this.fixRequestPath(this.scope) + `/${id||""}`
+    return this.httpClass().PATH + this.fixRequestPath(this.scope) + `/${id || ""}`
   }
 
   protected fixRequestPath(path: string): string {
     return `/${path.replace(/^\//, '')}`
   }
 
-  protected resolveBaseResponse(res: BaseResponse): boolean {
-    return res.result
+  protected resolveBaseResponse(res: RequestReturn<BaseResponse>): boolean {
+    return this.resolveResponse(res).result
+  }
+
+  protected resolveResponse<T = unknown>(res: RequestReturn<T>): T {
+    return res.body
   }
 
   private httpClass() {

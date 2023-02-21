@@ -1,6 +1,6 @@
 {
   "name": "biggo-api",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "biggo api client for node js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -10,6 +10,16 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
+    },
+    "./api/*": {
+      "require": "./lib/api/*/index.js",
+      "types": "./lib/api/*/index.d.ts",
+      "import": "./lib/api/*/index.js"
+    },
+    "./auth/*": {
+      "require": "./lib/auth/*/index.js",
+      "types": "./lib/auth/*/index.d.ts",
+      "import": "./lib/auth/*/index.js"
     }
   },
   "files": [

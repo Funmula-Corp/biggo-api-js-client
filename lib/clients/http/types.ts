@@ -1,4 +1,6 @@
 import FormData from "form-data"
+import { Headers as FetchHeader } from "node-fetch"
+import { BigGoAPIErrorEnum } from "../../error"
 
 export enum Method {
   Get = "GET",
@@ -58,4 +60,19 @@ export interface NormalizedRequest {
   url: string
   headers: Headers
   body?: string | FormData
+}
+
+export type ErrorResponse = {
+  result: false
+  error: {
+    code: BigGoAPIErrorEnum,
+    message: string
+  }
+}
+
+export type BaseResponse = { result: true } | ErrorResponse
+
+export interface RequestReturn<T = unknown> {
+  body: T
+  headers: FetchHeader
 }

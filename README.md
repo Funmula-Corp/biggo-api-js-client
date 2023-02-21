@@ -39,8 +39,8 @@ const { auth, api } = require("biggo-api")
 
 ```js
 const client = auth.getJWTClient({
-  apiKey: "<api key>",
-  apiSecretKey: "<api secret>"
+  client_id: "<api key>",
+  client_secret: "<api secret>"
 })
 
 const video = api.video({ client })

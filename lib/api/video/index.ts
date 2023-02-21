@@ -1,10 +1,16 @@
-import { DataType } from "../../clients/http/types"
+import { BaseResponse, DataType } from "../../clients/http/types"
 import { APIClient } from "../client"
 import fs from "node:fs"
-import type { APIClientRequired, BaseResponse } from "../types"
+import { BigGoVideo } from "./struct"
+import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
+import { devWarn } from "../../util/logger"
+import type { APIClientRequired } from "../types"
 import type { VideoUpdateParams, VideoResponse, VideoUploadParams, VideoUploadResponse } from "./types"
 
+
 export class APIVideoClient extends APIClient {
+  static readonly VIDEO_PRODUCT_LIMIT = 10
+
   constructor(params: APIClientRequired) {
     super({
       ...params,
@@ -13,20 +19,31 @@ export class APIVideoClient extends APIClient {
   }
 
   /**
+   * Wrap get video with error handle
+   */
+  public async get(id: string): Promise<BigGoVideo|undefined> {
+    return this._get(id).catch(this.errorHandle)
+  }
+
+  /**
    * Get video info with video id
    */
-  async get(id: string) {
-    const { video } = await this.client.get<VideoResponse>({
+  private async _get(id: string): Promise<BigGoVideo|undefined> {
+    const { body: { video } } = await this.client.get<VideoResponse>({
       path: this.getRequestPath(id)
     })
 
     return video.length ? video[0] : undefined
   }
 
+  public async update(id: string, params: VideoUpdateParams): Promise<boolean|undefined> {
+    return this._update(id, params).catch(this.errorHandle)
+  }
+
   /**
    * Update video properties
    */
-  async update(id: string, params: VideoUpdateParams) {
+  private async _update(id: string, params: VideoUpdateParams): Promise<boolean> {
     return this.resolveBaseResponse(
       await this.client.patch<BaseResponse>({
         path: this.getRequestPath(id),
@@ -36,10 +53,14 @@ export class APIVideoClient extends APIClient {
     )
   }
 
+  public async delete(id: string): Promise<boolean|undefined> {
+    return this._delete(id).catch(this.errorHandle)
+  }
+
   /**
    * Delete the video if the api token owner owns it
    */
-  async delete(id: string) {
+  private async _delete(id: string): Promise<boolean> {
     return this.resolveBaseResponse(
       await this.client.delete<BaseResponse>({
         path: this.getRequestPath(id)
@@ -47,43 +68,100 @@ export class APIVideoClient extends APIClient {
     )
   }
 
-  /**
-   * Upload the new video to token owner account
-   */
-  async upload({ file, ...params }: VideoUploadParams) {
-    // upload video
-    const { result, ...body } = await this.client.post<VideoUploadResponse>({
+  private async uploadFile(file: string, thumbnailTime: number = 0): Promise<string|undefined> {
+    return await this.client.post<VideoUploadResponse>({
       path: this.getRequestPath(),
       type: DataType.MultipartFormData,
       data: { file: fs.createReadStream(file) },
       extraHeaders: {
         "File-Size": fs.statSync(file).size,
-        "X-Bgo-Thumbnail-TS": params.thumbnailTime || 0,
+        "X-Bgo-Thumbnail-TS": thumbnailTime,
       },
     })
+    .then(({ body }) => body.video_id)
+    .catch(error => {
+      if(!(error instanceof BigGoAPIError)) {
+        throw error
+      }
 
-    if(!result) {
-      throw new Error("video upload fail.")
-    }
+      switch(error.code) {
+        case BigGoAPIErrorEnum.VIDEO_UPLOAD_VIDEO_EXIST:
+          throw error
+        case BigGoAPIErrorEnum.VIDEO_UPLOAD_TRANSCODE_ERROR:
+          devWarn("video transcode error")
+          break
+      }
 
-    // edit video data
-    const res = await this.client.post<BaseResponse>({
-      path: this.getRequestPath(body.video_id),
-      data: this.mappingEditFields(params)
+      return undefined
     })
+  }
 
-    if(!res) {
-      throw new Error("video upload fail.")
+  private async updateUploadedFile(id: string, params: Omit<VideoUploadParams, "file">): Promise<boolean> {
+    return this.resolveBaseResponse(
+      await this.client.post<BaseResponse>({
+        path: this.getRequestPath(id),
+        data: this.mappingEditFields(params)
+      })
+    )
+  }
+
+  /**
+   * Upload the new video to token owner account
+   */
+  public async upload({ file, ...params }: VideoUploadParams): Promise<string|undefined> {
+    const videoId = await this.uploadFile(file, params.thumbnailTime)
+    if(!videoId) {
+      return undefined
     }
 
-    return body.video_id
+    const editRes = await this.updateUploadedFile(videoId, params).catch(this.errorHandle)
+    if(!editRes) {
+      await this.delete(videoId)
+      return undefined
+    }
+
+    return videoId
   }
 
   private mappingEditFields(params: VideoUpdateParams) {
-    return {
-      ...params,
-      product_list: params.products,
-      "thumbnail-ts": params.thumbnailTime
+    if(params.products && params.products?.length > APIVideoClient.VIDEO_PRODUCT_LIMIT) {
+      devWarn("The product list includes over 10 items.")
     }
+
+    const { title, description, limit } = params
+    return {
+      title, description, limit,
+      product_list: params.products?.splice(0, APIVideoClient.VIDEO_PRODUCT_LIMIT),
+      "thumbnail-ts": params.thumbnailTime,
+    }
+  }
+
+  private errorHandle(error: unknown): undefined {
+    if(!(error instanceof BigGoAPIError)) {
+      throw error
+    }
+
+    switch(error.code) {
+      case BigGoAPIErrorEnum.VIDEO_DIFFERENT_USER:
+        devWarn("different user")
+        break
+      case BigGoAPIErrorEnum.VIDEO_DELETED:
+        devWarn("video deleted")
+        break
+      case BigGoAPIErrorEnum.VIDEO_NOT_EXIST:
+        devWarn("video not exist")
+        break
+      case BigGoAPIErrorEnum.VIDEO_PARAMETER_INVALID:
+        devWarn("video parameter invalid")
+        break
+      case BigGoAPIErrorEnum.VIDEO_UPLOAD_PRODUCT_IS_NOT_EXIST:
+        devWarn("Product is not exist.")
+        break
+      case BigGoAPIErrorEnum.VIDEO_UPLOAD_PRODUCT_LIST_OVER_LIMIT:
+        devWarn("The product list includes over 10 items.")
+        break
+    }
+
+    return undefined
   }
 }
