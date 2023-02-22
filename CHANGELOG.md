@@ -9,6 +9,7 @@
 ## Changes
 
 - Adding api client error handle, api error will perform `console.warn` in development mode(NODE_ENV=development)
+- Adding user api client handle (/user)
 
 # [v0.1.1]
 

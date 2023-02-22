@@ -49,10 +49,11 @@ const info = await video.get("<video id>")
 
 ## Document
 
-|scope||
+|Path||
 |:---:|---|
 |/video|[Video Api Client](./lib/api/video#readme)|
+|/user|[User Api Client](./lib/api/user#readme)|
 
 ## License
 
-MIT
+[MIT](./LICENSE)
