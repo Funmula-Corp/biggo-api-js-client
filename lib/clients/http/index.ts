@@ -2,6 +2,7 @@ import { DataType, DeleteRequestParams, ErrorResponse, GetRequestParams, Headers
 import fetch, { Headers as Header } from "node-fetch"
 import FormData from 'form-data'
 import { BigGoAPIError } from "../../error"
+import ProcessedQuery from "../../util/processed-query"
 
 export class HttpClient {
   readonly hostname: string
@@ -88,7 +89,7 @@ export class HttpClient {
       }
     }
 
-    const url = `${params.hostname || this.hostname}${this.getRequestPath(params.path)}`
+    const url = `${params.hostname || this.hostname}${this.getRequestPath(params.path)}${ProcessedQuery.stringify(params.query||{})}`
     const request: NormalizedRequest = {
       method: params.method,
       url,
@@ -117,7 +118,6 @@ export class HttpClient {
 
   private async doRequest<T = unknown>(request: NormalizedRequest): Promise<RequestReturn<T>> {
     const headers = this.getHeader(request.headers)
-
     const response = await fetch(request.url, {
       ...request,
       body: request.body as string,
