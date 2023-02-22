@@ -65,7 +65,7 @@ video.upload({
 
 Update video info.
 
-`video.upload(<video id>, [Options])`
+`video.update(<video id>, [Options])`
 * Return: `Promise<boolean>` `true` if updated success
 
 ```js
