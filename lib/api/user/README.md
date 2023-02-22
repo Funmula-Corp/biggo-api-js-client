@@ -1,4 +1,4 @@
-# BigGo Video API Client
+# BigGo User API Client
 
 ## First Step
 
