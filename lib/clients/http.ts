@@ -103,7 +103,7 @@ export class HttpClient extends AbstractHttpClient {
       }
     }
 
-    if ("error" in (body as any)) {
+    if (typeof body === "object" && "error" in (body as any)) {
       throw new BigGoAPIError(body as ErrorResponse)
     } else if (!response.ok) {
       throw new Error("BigGo API Error")
