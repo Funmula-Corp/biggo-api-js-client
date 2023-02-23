@@ -1,3 +1,7 @@
+# [v0.2.2]
+
+- changes video upload params type: products and thumbnailTime is not required
+
 # [v0.2.1]
 
 - changes user api client response type
