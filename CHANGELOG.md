@@ -1,3 +1,7 @@
+# [v0.2.1]
+
+- changes user api client response type
+
 # [v0.2.0]
 
 ## Breaking
