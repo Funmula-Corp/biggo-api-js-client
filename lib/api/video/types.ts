@@ -25,7 +25,7 @@ export type VideoUpdateParams = {
   thumbnailTime ?: number
 }
 
-export type VideoUploadParams = Required<VideoUpdateParams> & {
+export type VideoUploadParams = Pick<Required<VideoUpdateParams>, "products" | "thumbnailTime"> & {
   file: string
 }
 
