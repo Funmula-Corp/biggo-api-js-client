@@ -1,6 +1,6 @@
 import { APIClient } from "../client"
 import { APIClientRequired } from "../types"
-import { UserLikeVideoResponse, UserSelfResponse, UserSubscribe, UserSubscribeResponse, UserVideo, UserVideoResponse } from "./types"
+import { UserLikeVideoResponse, UserSelfResponse, UserVideo } from "./types"
 
 export class APIUserClient extends APIClient {
   constructor(params: APIClientRequired) {
@@ -20,41 +20,20 @@ export class APIUserClient extends APIClient {
   }
 
   public async getVideos(): Promise<UserVideo[]> {
-    const { body } = await this.client.get<UserVideoResponse>({
+    return this.getUserVideos("user_video")
+  }
+
+  public async getLikeVideos(): Promise<UserVideo[]> {
+    return this.getUserVideos("like_video")
+  }
+
+  private async getUserVideos(tab: string, p: number = 1): Promise<UserVideo[]> {
+    const { body } = await this.client.get<UserLikeVideoResponse>({
       path: this.getRequestPath("self/video"),
-      query: {
-        tab: "user_video",
-        p: 1
-      }
+      query: { tab, p }
     })
 
     const { result, ...data } = body
     return data.user_video.data || []
-  }
-
-  public async getLikeVideos(): Promise<UserVideo[]> {
-    const { body } = await this.client.get<UserLikeVideoResponse>({
-      path: this.getRequestPath("self/video"),
-      query: {
-        tab: "like_video",
-        p: 1
-      }
-    })
-
-    const { result, ...data } = body
-    return data.like_video.data || []
-  }
-
-  public async getSubscribeProducts(): Promise<UserSubscribe[]> {
-    const { body } = await this.client.get<UserSubscribeResponse>({
-      path: this.getRequestPath("self/video"),
-      query: {
-        tab: "subscribe_product",
-        p: 1
-      }
-    })
-
-    const { result, ...data } = body
-    return data.subscribe_product.data || []
   }
 }

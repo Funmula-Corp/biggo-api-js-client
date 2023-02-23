@@ -112,14 +112,14 @@ export type UserVideoResponse = UserBaseResponse & {
 }
 
 export type UserLikeVideoResponse = UserBaseResponse & {
-  like_video: {
+  user_video: {
     size: number
     data: UserVideo[]
   }
 }
 
 export type UserSubscribeResponse = UserBaseResponse & {
-  subscribe_product: {
+  user_video: {
     all_total: number
     rtotal: number
     q: string

@@ -41,16 +41,3 @@ get videos of user liked
 ```js
 user.getLikeVideos()
 ```
-
----
-
-### Get Subscribe Product
-
-get subscribe product of user
-
-`user.getSubscribeProducts()`
-* Return: `Promise<Product[]>`
-
-```js
-user.getSubscribeProducts()
-```
