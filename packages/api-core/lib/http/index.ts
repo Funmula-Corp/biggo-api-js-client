@@ -39,6 +39,6 @@ export class AbstractHttpClient implements RESTClient {
   }
 
   protected async request<T = unknown>(params: RequestParams): Promise<RequestReturn<T>> {
-    throw new Error("AbstractHttpClient need implement")
+    throw new Error("AbstractHttpClient must be implemented")
   }
 }
