@@ -1,6 +1,6 @@
 import { HttpClient } from "../../clients/http"
-import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "../../clients/http/types"
-import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
+import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "@funmula/api-core/lib/http/types"
+import { BigGoAPIError, BigGoAPIErrorEnum } from "@funmula/api-core/lib/error"
 import { BIGGO_AUTH_JWT_ENDPOINT } from "./endpoint"
 import type { BigGoJWTClientInitialParams, JWTAuthResponse } from "./types"
 

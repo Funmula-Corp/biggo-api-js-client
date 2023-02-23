@@ -1,10 +1,10 @@
-import { BaseResponse, DataType } from "../../clients/http/types"
+import { BaseResponse, DataType } from "../../http/types"
 import { APIClient } from "../client"
 import fs from "node:fs"
 import { BigGoVideo } from "./struct"
 import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
 import { devWarn } from "../../util/logger"
-import type { APIClientRequired } from "../types"
+import type { APIClientRequired } from "../../types"
 import type { VideoUpdateParams, VideoResponse, VideoUploadParams, VideoUploadResponse } from "./types"
 
 

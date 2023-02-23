@@ -1,4 +1,4 @@
-import { BaseResponse } from "../../clients/http/types"
+import { BaseResponse } from "../../http/types"
 import { BigGoVideo, VideoUserInfo } from "./struct"
 
 export enum VideoProcessStatus {
@@ -17,8 +17,8 @@ export type VideoUpdateParams = {
   description?: string
   limit?: VideoVisibility | "everyone" | "limit_myself" | "non_public"
   products?: {
-    nindex: string,
-    oid: string,
+    nindex: string
+    oid: string
   }[]
 
   /** thumbnail screenshot time(ms) */
@@ -41,6 +41,6 @@ export type AVideoInfo = BigGoVideo & {
 }
 
 export type VideoUploadResponse = BaseResponse & {
-  result: true,
+  result: true
   video_id: string
 }

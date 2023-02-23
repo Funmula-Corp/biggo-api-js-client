@@ -1,6 +1,6 @@
-import { APIUserClient } from "./user"
 import { APIVideoClient } from "./video"
-import type { APIClientRequired } from "./types"
+import { APIUserClient } from "./user"
+import { APIClientRequired } from "../types"
 
 export function video(params: APIClientRequired) {
   return new APIVideoClient(params)

@@ -1,49 +1,18 @@
-import { DataType, DeleteRequestParams, ErrorResponse, GetRequestParams, Headers, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams, RequestReturn } from "./types"
-import fetch, { Headers as Header } from "node-fetch"
-import FormData from 'form-data'
-import { BigGoAPIError } from "../../error"
-import ProcessedQuery from "../../util/processed-query"
+import fetch, { Headers } from "node-fetch"
+import FormData from "form-data"
+import { BigGoAPIError } from "@funmula/api-core/lib/error"
+import ProcessedQuery from "../util/processed-query"
+import { AbstractHttpClient } from "@funmula/api-core/lib/http"
+import { DataType, Method } from "@funmula/api-core/lib/http/types"
 
-export class HttpClient {
+import type { ErrorResponse, NormalizedRequest, PostRequestParams, RequestParams, RequestReturn } from "@funmula/api-core/lib/http/types"
+
+export class HttpClient extends AbstractHttpClient {
   readonly hostname: string
 
   constructor(hostname: string) {
+    super()
     this.hostname = hostname
-  }
-
-  /**
-   * Performs a GET request on the given path.
-   */
-  public async get<T = unknown>(params: GetRequestParams) {
-    return this.request<T>({ method: Method.Get, ...params })
-  }
-
-  /**
-   * Performs a POST request on the given path.
-   */
-  public async post<T = unknown>(params: PostRequestParams) {
-    return this.request<T>({ method: Method.Post, ...params })
-  }
-
-  /**
-   * Performs a PUT request on the given path.
-   */
-  public async put<T = unknown>(params: PutRequestParams) {
-    return this.request<T>({ method: Method.Put, ...params })
-  }
-
-  /**
-   * Performs a PATCH request on the given path.
-   */
-  public async patch<T = unknown>(params: PatchRequestParams) {
-    return this.request<T>({ method: Method.Patch, ...params })
-  }
-
-  /**
-   * Performs a DELETE request on the given path.
-   */
-  public async delete<T = unknown>(params: DeleteRequestParams) {
-    return this.request<T>({ method: Method.Delete, ...params })
   }
 
   protected async request<T = unknown>(params: RequestParams): Promise<RequestReturn<T>> {
@@ -76,7 +45,7 @@ export class HttpClient {
               form.append(key, data[key] as string)
             }
 
-            body = form
+            body = form as unknown as globalThis.FormData
             break
         }
         headers = {
@@ -104,8 +73,8 @@ export class HttpClient {
     return `/${path.replace(/^\//, "")}`
   }
 
-  private getHeader(headers: Headers) {
-    const h = new Header()
+  private getHeader(headers: Record<string, string|string[]>) {
+    const h = new Headers()
     Object.keys(headers).forEach(k => {
       const value = Array.isArray(headers[k])
         ? (headers[k] as string[]).join(",")
@@ -142,7 +111,7 @@ export class HttpClient {
 
     return {
       body: body as T,
-      headers: response.headers
+      headers: response.headers.raw()
     }
   }
 }

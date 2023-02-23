@@ -1,5 +1,5 @@
 import { APIClient } from "../client"
-import { APIClientRequired } from "../types"
+import { APIClientRequired } from "../../types"
 import { UserLikeVideoResponse, UserSelfResponse, UserVideo } from "./types"
 
 export class APIUserClient extends APIClient {

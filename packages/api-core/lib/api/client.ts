@@ -1,11 +1,11 @@
-import { HttpClient } from "../clients/http"
-import { RequestReturn, BaseResponse } from "../clients/http/types"
-import type { APIClientConfiguration } from "./types"
+import { RESTClient } from "../http/types"
+import { RequestReturn, BaseResponse } from "../http/types"
+import type { APIClientConfiguration } from "../types"
 
 export class APIClient {
   static readonly PATH = "/api/v1"
 
-  readonly client: HttpClient
+  readonly client: RESTClient
   readonly scope: string
 
   constructor(param: APIClientConfiguration) {

@@ -1,3 +1,7 @@
+# [v3.0.0]
+
+- Splitting api and client code logic Putting api logic into packages to make monorepo
+
 # [v0.2.2]
 
 - changes video upload params type: products and thumbnailTime is not required

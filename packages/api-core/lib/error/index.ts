@@ -1,4 +1,4 @@
-import { ErrorResponse } from "../clients/http/types"
+import { ErrorResponse } from "../http/types"
 import { BigGoAPIErrorEnum } from "./types"
 
 export { BigGoAPIErrorEnum }

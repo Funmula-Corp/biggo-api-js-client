@@ -1,4 +1,4 @@
-import { BaseResponse } from "../../clients/http/types"
+import { BaseResponse } from "../../http/types"
 import { VideoProcessStatus } from "../video/types"
 
 export interface BigGoUser {

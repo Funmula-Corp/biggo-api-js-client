@@ -1,0 +1,42 @@
+{
+  "name": "@funmula/api-core",
+  "version": "1.0.0",
+  "description": "biggo api core",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./lib/*/types": {
+      "require": "./lib/*/types.js",
+      "import": "./lib/*/types.js",
+      "default": "./lib/*/types.js",
+      "types": "./lib/*/types.d.ts"
+    },
+    "./lib/*": {
+      "require": "./lib/*/index.js",
+      "import": "./lib/*/index.js",
+      "default": "./lib/*/index.js",
+      "types": "./lib/*/index.d.ts"
+    }
+  },
+  "files": [
+    "**/*.d.ts",
+    "**/*.d.ts.map",
+    "**/*.js",
+    "**/*.js.map",
+    "!node_modules"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}

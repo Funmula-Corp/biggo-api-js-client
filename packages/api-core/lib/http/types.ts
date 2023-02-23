@@ -1,6 +1,4 @@
-import FormData from "form-data"
-import { Headers as FetchHeader } from "node-fetch"
-import { BigGoAPIErrorEnum } from "../../error"
+import { BigGoAPIErrorEnum } from "../error"
 
 export enum Method {
   Get = "GET",
@@ -74,5 +72,13 @@ export type BaseResponse = { result: true } | ErrorResponse
 
 export interface RequestReturn<T = unknown> {
   body: T
-  headers: FetchHeader
+  headers: Headers
+}
+
+export interface RESTClient {
+  get<T = unknown>(params: GetRequestParams): Promise<RequestReturn<T>>
+  post<T = unknown>(params: PostRequestParams): Promise<RequestReturn<T>>
+  put<T = unknown>(params: PutRequestParams): Promise<RequestReturn<T>>
+  patch<T = unknown>(params: PatchRequestParams): Promise<RequestReturn<T>>
+  delete<T = unknown>(params: DeleteRequestParams): Promise<RequestReturn<T>>
 }

@@ -1,6 +1,6 @@
 {
   "name": "biggo-api",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "biggo api client for node js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -22,6 +22,9 @@
       "import": "./lib/auth/*/index.js"
     }
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "files": [
     "**/*.d.ts",
     "**/*.d.ts.map",

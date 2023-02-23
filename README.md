@@ -51,8 +51,8 @@ const info = await video.get("<video id>")
 
 |Path||
 |:---:|---|
-|/video|[Video Api Client](./lib/api/video#readme)|
-|/user|[User Api Client](./lib/api/user#readme)|
+|/video|[Video Api Client](./packages/api-core/lib/api/video#readme)|
+|/user|[User Api Client](./packages/api-core/lib/api/user#readme)|
 
 ## License
 
