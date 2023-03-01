@@ -1,6 +1,6 @@
-import { HttpClient } from "../../clients/http"
-import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "@funmula/api-core/lib/http/types"
-import { BigGoAPIError, BigGoAPIErrorEnum } from "@funmula/api-core/lib/error"
+import { HttpClient } from "../../http"
+import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "../../http/types"
+import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
 import { BIGGO_AUTH_JWT_ENDPOINT } from "./endpoint"
 import type { BigGoJWTClientInitialParams, JWTAuthResponse } from "./types"
 
@@ -12,8 +12,11 @@ export class BigGoJWTClient extends HttpClient {
   #tokenType: string = "Bearer"
   #tokenExpires: number = 0
 
-  constructor({ client_id, client_secret }: BigGoJWTClientInitialParams) {
-    super(process.env.API_DOMAIN!)
+  #authHostname: string
+
+  constructor({ client_id, client_secret, ...param }: BigGoJWTClientInitialParams) {
+    super(param.hostname)
+    this.#authHostname = param.authHostname
     this.#clientId = client_id
     this.#clientSecret = client_secret
   }
@@ -48,7 +51,7 @@ export class BigGoJWTClient extends HttpClient {
     const auth = Buffer.from(`${this.#clientId}:${this.#clientSecret}`).toString('base64')
     const params: PostRequestParams = {
       data: { grant_type: "client_credentials" },
-      hostname: process.env.API_AUTH_DOMAIN,
+      hostname: this.#authHostname,
       path: BIGGO_AUTH_JWT_ENDPOINT,
       type: DataType.URLEncoded,
       extraHeaders: {

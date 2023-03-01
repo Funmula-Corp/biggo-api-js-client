@@ -8,7 +8,7 @@
     "declaration": true,
     "declarationMap": true,
     "target": "esnext",
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,

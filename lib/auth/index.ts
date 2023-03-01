@@ -1,15 +1,8 @@
-import { HttpClient } from "../clients/http"
 import { BigGoJWTClient } from "./jwt"
-import type { BigGoJWTClientInitialParams } from "./jwt/types"
+import { BigGoJwtInitParam } from "./types"
 
 export * as JWT from "./jwt"
 
-export class GuestClient extends HttpClient {
-  constructor() {
-    super(process.env.API_DOMAIN!)
-  }
-}
-
-export function getJWTClient(init: BigGoJWTClientInitialParams) {
+export function getJWTClient(init: BigGoJwtInitParam) {
   return new BigGoJWTClient(init)
 }

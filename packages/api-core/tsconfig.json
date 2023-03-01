@@ -10,7 +10,8 @@
     "target": "esnext",
     "lib": [
       "ESNext",
-      "DOM"
+      "DOM",
+      "DOM.Iterable"
     ],
     "allowJs": true,
     "skipLibCheck": true,
