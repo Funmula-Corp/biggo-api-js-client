@@ -42,7 +42,7 @@ Upload new video.
 video.upload({
   file: "<video file path>",
   description: "upload via api",
-  limit: "everyone",
+  access: "everyone",
   products: [],
   thumbnailTime: 0,
 })
@@ -55,7 +55,7 @@ video.upload({
 |file|✔️|string|video file path|
 |title|️️️️️️️️✔️|string|video title|
 |description|✔️|string|video description|
-|limit|✔️|`everyone` `limit_myself` `non_public`|video visibility setting|
+|access|✔️|`everyone` `limit_myself` `non_public`|video visibility setting|
 |thumbnailTime||number|micro second of thumbnail in video|
 
 ---
@@ -70,7 +70,7 @@ Update video info.
 ```js
 video.update("<video id>", {
   description: "upload via api",
-  limit: "everyone",
+  access: "everyone",
   products: [],
   thumbnailTime: 0,
 })
@@ -82,7 +82,7 @@ video.update("<video id>", {
 |:---:|:---:|:---:|:---:|
 |title|️️️️️️️️ |string|video title|
 |description| |string|video description|
-|limit| |`everyone` `limit_myself` `non_public`|video visibility setting|
+|access| |`everyone` `limit_myself` `non_public`|video visibility setting|
 |thumbnailTime| |number|micro second of thumbnail in video|
 
 ---
