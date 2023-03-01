@@ -1,5 +1,9 @@
-# v1.0.1
+# v1.0.0
 
-Chore:
+## Changes:
+
+- change fields name limit -> access
+
+# Chore:
 
 - add APIClient export

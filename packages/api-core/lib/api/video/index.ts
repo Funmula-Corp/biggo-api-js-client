@@ -128,9 +128,10 @@ export class APIVideoClient extends APIClient {
       devWarn("The product list includes over 10 items.")
     }
 
-    const { title, description, limit } = params
+    const { title, description, access } = params
     return {
-      title, description, limit,
+      title, description,
+      limit: access,
       product_list: params.products?.splice(0, APIVideoClient.VIDEO_PRODUCT_LIMIT),
       "thumbnail-ts": params.thumbnailTime,
     }

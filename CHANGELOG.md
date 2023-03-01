@@ -1,5 +1,8 @@
-# [v3.0.0]
+# [v0.3.0]
 
+## Changes:
+
+- change fields name limit -> access
 - Splitting api and client code logic Putting api logic into packages to make monorepo
 
 # [v0.2.2]
