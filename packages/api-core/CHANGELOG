@@ -1,5 +1,9 @@
 # v1.0.0
 
+## Feat:
+
+- add GuestClient
+
 ## Changes:
 
 - change fields name limit -> access
