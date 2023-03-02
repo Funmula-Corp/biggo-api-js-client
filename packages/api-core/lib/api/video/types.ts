@@ -7,9 +7,9 @@ export enum VideoProcessStatus {
 }
 
 export enum VideoVisibility {
-  Everyone = "everyone",
-  Myself = "limit_myself",
-  NonPublic = "non_public",
+  Public = 0,
+  Private = 1,
+  Unlisted = 2,
 }
 
 export type VideoUpdateParams = {

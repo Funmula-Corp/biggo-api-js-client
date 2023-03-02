@@ -67,7 +67,7 @@ export interface BigGoVideo {
   timestamp: number
   url: string
   description: string
-  limit: VideoVisibility
+  access: VideoVisibility
   video_comment_count: number
   video_like_count: number
   view_count: number

@@ -133,7 +133,7 @@ export class APIVideoClient extends APIClient {
       title, description,
       limit: access,
       product_list: params.products?.splice(0, APIVideoClient.VIDEO_PRODUCT_LIMIT),
-      "thumbnail-ts": params.thumbnailTime,
+      thumbnail_time: params.thumbnailTime,
     }
   }
 
