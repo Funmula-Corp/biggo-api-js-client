@@ -25,7 +25,7 @@ export type VideoUpdateParams = {
   thumbnailTime ?: number
 }
 
-export type VideoUploadParams = Pick<Required<VideoUpdateParams>, "products" | "thumbnailTime"> & {
+export type VideoUploadParams = Required<Omit<VideoUpdateParams, "products" | "thumbnailTime">> & Partial<Pick<VideoUpdateParams, "products" | "thumbnailTime">> & {
   file: string
 }
 

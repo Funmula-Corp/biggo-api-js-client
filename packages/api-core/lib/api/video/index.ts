@@ -96,7 +96,7 @@ export class APIVideoClient extends APIClient {
     })
   }
 
-  private async updateUploadedFile(id: string, params: Omit<VideoUploadParams, "file">): Promise<boolean> {
+  private async updateUploadedFile(id: string, params: VideoUpdateParams): Promise<boolean> {
     return this.resolveBaseResponse(
       await this.client.post<BaseResponse>({
         path: this.getRequestPath(id),
