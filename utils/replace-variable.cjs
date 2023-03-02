@@ -1,13 +1,17 @@
 const replace = require("replace-in-file")
 
-Object.keys(process.env).forEach(name => {
-  if (name !== "API_AUTH_DOMAIN" && name !== "API_DOMAIN") {
-    return
-  }
-
-  replace({
+async function main() {
+  await replace({
     files: ["lib/**/*.js"],
-    from: new RegExp(`process\.env\.${name}`, "g"),
-    to: `"${process.env[name]}"`,
+    from: `process.env.API_DOMAIN`,
+    to: `"${process.env.API_DOMAIN}"`,
   })
-})
+
+  await replace({
+    files: ["lib/**/*.js"],
+    from: `process.env.API_AUTH_DOMAIN`,
+    to: `"${process.env.API_AUTH_DOMAIN}"`,
+  })
+}
+
+main()
