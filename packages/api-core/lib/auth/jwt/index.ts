@@ -97,8 +97,8 @@ export class BigGoJWTClient extends HttpClient {
         case BigGoAPIErrorEnum.JWT_INVALID:
           throw new Error("BigGo JWT Client error: invalid client credential")
       }
-    }
 
-    throw new Error("BigGo JWT Client Unknown error")
+      throw error
+    }
   }
 }
