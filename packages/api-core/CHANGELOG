@@ -1,13 +1,13 @@
 # v1.0.0
 
-## Feat:
+## Feat
 
 - add GuestClient
 
-## Changes:
+## Changes
 
 - change fields name limit -> access
 
-# Chore:
+## Chore
 
 - add APIClient export
