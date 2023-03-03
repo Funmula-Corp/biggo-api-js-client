@@ -1,11 +1,11 @@
 # [v0.3.0]
 
-## Changes:
+## Changes
 
 - change fields name limit -> access
 - Splitting api and client code logic Putting api logic into packages to make monorepo
 
-## Perf:
+## Perf
 
 - refactor http client implement
 
