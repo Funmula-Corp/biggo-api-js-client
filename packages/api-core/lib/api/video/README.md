@@ -22,6 +22,7 @@ const video = api.video({ client })
 get a video information.
 
 `video.get(<video id>)`
+
 * Return: `Promise<[Video]|undefined>` `undefined` if video not found
 
 ```js
@@ -55,7 +56,7 @@ video.upload({
 |file|✔️|string|video file path|
 |title|️️️️️️️️✔️|string|video title|
 |description|✔️|string|video description|
-|access|✔️|`everyone` `limit_myself` `non_public`|video visibility setting|
+|access|✔️|`public` `private` `unlisted`|video visibility setting|
 |thumbnailTime||number|micro second of thumbnail in video|
 
 ---
@@ -65,6 +66,7 @@ video.upload({
 Update video info.
 
 `video.update(<video id>, [Options])`
+
 * Return: `Promise<boolean>` `true` if updated success
 
 ```js
@@ -82,15 +84,17 @@ video.update("<video id>", {
 |:---:|:---:|:---:|:---:|
 |title|️️️️️️️️ |string|video title|
 |description| |string|video description|
-|access| |`everyone` `limit_myself` `non_public`|video visibility setting|
+|access| |`public` `private` `unlisted`|video visibility setting|
 |thumbnailTime| |number|micro second of thumbnail in video|
 
 ---
+
 ### Delete
 
 Remove video.
 
 `video.delete(<video id>)`
+
 * Return: `Promise<boolean>` `true` if removed success
 
 ```js

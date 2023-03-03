@@ -130,8 +130,7 @@ export class APIVideoClient extends APIClient {
 
     const { title, description, access } = params
     return {
-      title, description,
-      limit: access,
+      title, description, access,
       product_list: params.products?.splice(0, APIVideoClient.VIDEO_PRODUCT_LIMIT),
       thumbnail_time: params.thumbnailTime,
     }

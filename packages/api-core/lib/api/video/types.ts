@@ -15,7 +15,7 @@ export enum VideoVisibility {
 export type VideoUpdateParams = {
   title?: string
   description?: string
-  access?: VideoVisibility | "everyone" | "limit_myself" | "non_public"
+  access?: VideoVisibility | "public" | "private" | "unlisted"
   products?: {
     nindex: string
     oid: string

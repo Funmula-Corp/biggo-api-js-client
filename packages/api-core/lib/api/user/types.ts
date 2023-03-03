@@ -1,5 +1,5 @@
 import { BaseResponse } from "../../http/types"
-import { VideoProcessStatus } from "../video/types"
+import { VideoProcessStatus, VideoVisibility } from "../video/types"
 
 export interface BigGoUser {
   userid: string
@@ -24,7 +24,7 @@ export interface UserVideo {
   timestamp: number
   url: string
   description: string
-  limit: number
+  access: VideoVisibility
   video_comment_count: number
   video_like_count: number
   view_count: number
