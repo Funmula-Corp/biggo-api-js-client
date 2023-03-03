@@ -30,6 +30,7 @@
     "**/*.d.ts.map",
     "**/*.js",
     "**/*.js.map",
+    "packages/**/package.json",
     "!node_modules"
   ],
   "scripts": {
@@ -43,7 +44,7 @@
     "clean": "tsc --build --clean",
     "clean:pkg": "npm run clean; cd ./packages/api-core; npm run clean;",
     "clean:all": "npm run clean; npm run clean:pkg",
-    "prepublishOnly": "npm run clean:all; npm run build:pkg && npm run build"
+    "prepublishOnly": "npm run clean:all; npm run build:all"
   },
   "author": "Funmula Corp.",
   "license": "MIT",
