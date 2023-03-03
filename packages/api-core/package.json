@@ -33,7 +33,6 @@
     "**/*.d.ts.map",
     "**/*.js",
     "**/*.js.map",
-    "packages/*",
     "!node_modules"
   ],
   "license": "MIT",
