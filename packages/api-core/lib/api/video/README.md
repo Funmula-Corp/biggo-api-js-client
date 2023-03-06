@@ -2,7 +2,7 @@
 
 ## First Step
 
-get api client.
+To get started, first obtain an API key and secret from BigGo API. Then, use the following code to obtain an API client:
 
 ```js
 import { auth, api } from "biggo-api"
