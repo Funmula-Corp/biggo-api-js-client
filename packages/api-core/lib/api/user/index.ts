@@ -1,6 +1,7 @@
 import { APIClient } from "../client"
 import { APIClientRequired } from "../../types"
-import { UserLikeVideoResponse, UserSelfResponse, UserVideo } from "./types"
+import { UserLikeVideoResponse, UserSelfResponse, VideosWrap } from "./types"
+import { APICollect } from "./collect"
 
 export class APIUserClient extends APIClient {
   constructor(params: APIClientRequired) {
@@ -19,21 +20,33 @@ export class APIUserClient extends APIClient {
     return data
   }
 
-  public async getVideos(): Promise<UserVideo[]> {
-    return this.getUserVideos("user_video")
+  public async getVideos(p: number = 1): Promise<VideosWrap> {
+    return this.getUserVideos("user_video", p)
   }
 
-  public async getLikeVideos(): Promise<UserVideo[]> {
-    return this.getUserVideos("like_video")
+  public getVideosCollect() {
+    return new APICollect({
+      dataGetter: (p: number) => this.getVideos(p)
+    })
   }
 
-  private async getUserVideos(tab: string, p: number = 1): Promise<UserVideo[]> {
+  public async getLikeVideos(p: number = 1): Promise<VideosWrap> {
+    return this.getUserVideos("like_video", p)
+  }
+
+  public getLikeVideosCollect() {
+    return new APICollect({
+      dataGetter: (p: number) => this.getLikeVideos(p),
+    })
+  }
+
+  private async getUserVideos(tab: string, p: number = 1): Promise<VideosWrap> {
     const { body } = await this.client.get<UserLikeVideoResponse>({
       path: this.getRequestPath("self/video"),
       query: { tab, p }
     })
 
     const { result, ...data } = body
-    return data.user_video.data || []
+    return data.user_video
   }
 }

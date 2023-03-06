@@ -104,19 +104,13 @@ export type UserBaseResponse = BaseResponse & {
   is_processing: string[]
 }
 
-export type UserVideoResponse = UserBaseResponse & {
-  user_video: {
-    size: number
-    data: UserVideo[]
-  }
+export type VideosWrap = {
+  size: number
+  data: UserVideo[]
 }
 
-export type UserLikeVideoResponse = UserBaseResponse & {
-  user_video: {
-    size: number
-    data: UserVideo[]
-  }
-}
+export type UserVideoResponse = UserBaseResponse & { user_video: VideosWrap }
+export type UserLikeVideoResponse = UserBaseResponse & { user_video: VideosWrap }
 
 export type UserSubscribeResponse = UserBaseResponse & {
   user_video: {
