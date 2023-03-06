@@ -1,3 +1,11 @@
+# v1.0.1
+
+## Feat
+
+### API Collect
+
+A class for collecting data from an API that uses pagination. The class is designed to simplify the process of retrieving all available data by automatically handling pagination.
+
 # v1.0.0
 
 ## Feat

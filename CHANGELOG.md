@@ -1,3 +1,11 @@
+# [v0.3.1]
+
+## Changes
+
+### @funmula/api-core
+
+- Please refer to [CHANGELOG.md](./packages/api-core/CHANGELOG) for details.
+
 # [v0.3.0]
 
 ## Changes
