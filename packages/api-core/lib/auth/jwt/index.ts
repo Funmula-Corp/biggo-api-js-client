@@ -14,11 +14,17 @@ export class BigGoJWTClient extends HttpClient {
 
   #authHostname: string
 
+  #onTokenUpdate: (token: string) => void = () => {}
+
   constructor({ client_id, client_secret, ...param }: BigGoJWTClientInitialParams) {
     super(param.hostname)
     this.#authHostname = param.authHostname
     this.#clientId = client_id
     this.#clientSecret = client_secret
+  }
+
+  public onTokenUpdate(f: (token: string) => void) {
+    this.#onTokenUpdate = f
   }
 
   public apiKey(apiKey: string): this {
@@ -67,6 +73,7 @@ export class BigGoJWTClient extends HttpClient {
     this.#token = response.access_token
     this.#tokenType = response.token_type
     this.#tokenExpires = response.expires_in + (Date.now() / 1000)
+    this.#onTokenUpdate(this.#token)
   }
 
   protected async renew() {
