@@ -37,6 +37,10 @@ export class BigGoJWTClient extends HttpClient {
     return this
   }
 
+  public token(t: string) {
+    this.#token = t
+  }
+
   public isExpired() {
     return !this.#tokenExpires || (Date.now() / 1000) > this.#tokenExpires
   }
@@ -53,15 +57,14 @@ export class BigGoJWTClient extends HttpClient {
     return this.#tokenType === "bearer" ? "Bearer" : this.#tokenType
   }
 
-  protected async auth() {
-    const auth = Buffer.from(`${this.#clientId}:${this.#clientSecret}`).toString('base64')
+  protected async auth(param: Record<string, string>={}) {
     const params: PostRequestParams = {
-      data: { grant_type: "client_credentials" },
+      data: { grant_type: "client_credentials", ...param },
       hostname: this.#authHostname,
       path: BIGGO_AUTH_JWT_ENDPOINT,
       type: DataType.URLEncoded,
       extraHeaders: {
-        Authorization: `Basic ${auth}`
+        Authorization: this.getAuthHeader()
       }
     }
 
@@ -74,6 +77,11 @@ export class BigGoJWTClient extends HttpClient {
     this.#tokenType = response.token_type
     this.#tokenExpires = response.expires_in + (Date.now() / 1000)
     this.#onTokenUpdate(this.#token)
+  }
+
+  protected getAuthHeader() {
+    const auth = Buffer.from(`${this.#clientId}:${this.#clientSecret}`).toString("base64")
+    return `Basic ${auth}`
   }
 
   protected async renew() {
