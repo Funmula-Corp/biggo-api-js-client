@@ -1,8 +1,21 @@
 # BigGo API Javascript Client
 
-The BigGo API Javascript Client provides an easy-to-use interface for accessing the BigGo API using `Javascript` and `Typescript` in `Nodejs` runtime. It can be installed using `npm`, `yarn`, or `pnpm`.
+BigGo API Javascript Client is a video API written in Javascript. We have two APIs included so far and will update more APIs and the function in each of them in the short future:
 
-## Installation
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Initializing Auth Client](#initializing-auth-client)
+  - [Accessing BigGo API](#accessing-biggo-api)
+- [Features](#features)
+  - [Video API](#video-api)
+  - [User API](#user-api)
+- [Typescript](#typescript)
+- [License](#license)
+
+## Getting Started
+
+### Installation
 
 Using npm
 
@@ -22,11 +35,7 @@ Using pnpm
 pnpm add biggo-api
 ```
 
-## Requirement
-
-* Nodejs >= 16
-
-## Usage
+### Usage
 
 Using ESM:
 
@@ -39,8 +48,6 @@ Using CJS:
 ```js
 const { auth, api } = require("biggo-api")
 ```
-
-## Getting Started
 
 ### Initializing Auth Client
 
@@ -71,12 +78,23 @@ const likedVideos = await user.getLikeVideos()
 // Use other resources in a similar way...
 ```
 
-## Supported APIs
+## Features
 
 This library currently supports the following BigGo APIs:
 
-* `/video` - [Video Api Client](./packages/api-core/lib/api/video#readme)
-* `/user` - [User Api Client](./packages/api-core/lib/api/user#readme)
+- `/video` - [Video Api](./packages/api-core/lib/api/video#readme)
+- `/user` - [User Api](./packages/api-core/lib/api/user#readme)
+
+### Video API
+
+- Uploading videos.
+- Getting video information - Using video ID to get the information for both video and the uploader. (ex: user ID, description, etc. )
+- Editing video settings - Editing video title, description, accessibility, etc.
+- Deleting videos.
+
+### User API
+
+- Getting video information on all uploaded videos on the personal video list.
 
 ## Typescript
 
