@@ -7,6 +7,9 @@ export enum BigGoAPIErrorEnum {
   JWT_INVALID = 3,
   JWT_EXPIRED = 4,
 
+  // parameter error
+  MISSING_PARAMETERS = 1010,
+
   // /video
   VIDEO_UPLOAD_TRANSCODE_ERROR = 1001,
   VIDEO_UPLOAD_VIDEO_EXIST = 1002,
@@ -20,3 +23,30 @@ export enum BigGoAPIErrorEnum {
   // /user
   USER_NOT_EXIST = 1007,
 }
+
+export enum BigGoAuthErrorEnum {
+  // server error
+  ERROR_METHOD = 1,
+  WITHOUT_AUTH = 2,
+  ENV_IS_EMPTY = 3,
+  NO_SUCH_FILE_OR_DIR = 4,
+
+  // parameter error
+  MISSING_PARAMETER = 1001,
+  INVALID_PARAMETER = 1002,
+
+  // auth error
+  APP_KEY_NOT_EXIST = 1003,
+  APP_KEY_IS_REVOKED = 1004,
+  APP_KEY_NOT_MATCH = 1005,
+  LOGIN_KEY_NOT_EXIST = 1006,
+  LOGIN_USER_NOT_EXIST = 1007,
+  LOGIN_TOKEN_NOT_EXIST = 1008,
+  REFRESH_TOKEN_IS_REVOKED = 1009,
+  REFRESH_TOKEN_NOT_EXIST = 1010,
+  CREATE_TOKEN_FAIL = 1012,
+  CREATE_REFRESH_TOKEN_FAIL = 1013,
+  UPDATE_REFRESH_TOKEN_FAIL = 1014,
+}
+
+export type BigGoUnionErrorEnum = BigGoAPIErrorEnum | BigGoAuthErrorEnum

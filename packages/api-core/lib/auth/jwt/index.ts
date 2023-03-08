@@ -1,6 +1,6 @@
 import { HttpClient } from "../../http"
-import { DataType, Method, PostRequestParams, RequestParams, RequestReturn } from "../../http/types"
-import { BigGoAPIError, BigGoAPIErrorEnum } from "../../error"
+import { DataType, ErrorResponse, Method, PostRequestParams, RequestParams, RequestReturn } from "../../http/types"
+import { BigGoAPIError, BigGoAPIErrorEnum, BigGoAuthErrorEnum } from "../../error"
 import { BIGGO_AUTH_JWT_ENDPOINT } from "./endpoint"
 import type { BigGoJWTClientInitialParams, JWTAuthResponse } from "./types"
 
@@ -14,7 +14,11 @@ export class BigGoJWTClient extends HttpClient {
 
   #authHostname: string
 
+  #errorRetry: number = 0
+  static RETRY_LIMIT = 3
+
   #onTokenUpdate: (token: string) => void = () => {}
+  #onAuthenticationError?: (error: BigGoAPIError<BigGoAuthErrorEnum>) => void
 
   constructor({ client_id, client_secret, ...param }: BigGoJWTClientInitialParams) {
     super(param.hostname)
@@ -23,22 +27,29 @@ export class BigGoJWTClient extends HttpClient {
     this.#clientSecret = client_secret
   }
 
-  public onTokenUpdate(f: (token: string) => void) {
+  public onTokenUpdate(f: (token: string) => void): this {
     this.#onTokenUpdate = f
-  }
-
-  public apiKey(apiKey: string): this {
-    this.#clientId = apiKey
     return this
   }
 
-  public apiSecretKey(apiSecretKey: string): this {
-    this.#clientSecret = apiSecretKey
+  public onAUthenticationError(f: (error: BigGoAPIError<BigGoAuthErrorEnum>) => void): this {
+    this.#onAuthenticationError = f
     return this
   }
 
-  public token(t: string) {
+  public clientId(clientId: string): this {
+    this.#clientId = clientId
+    return this
+  }
+
+  public clientSecret(clientSecret: string): this {
+    this.#clientSecret = clientSecret
+    return this
+  }
+
+  public token(t: string): this {
     this.#token = t
+    return this
   }
 
   public isExpired() {
@@ -70,7 +81,16 @@ export class BigGoJWTClient extends HttpClient {
 
     const { body: response } = await super.request<JWTAuthResponse>({ method: Method.Post, ...params })
     if ("error" in response) {
-      throw new Error(response.error === "invalid_request" ? "invalid credential" : response.error)
+      if(typeof response.error === "object" && "code" in response.error && "message" in response.error) {
+        const error = new BigGoAPIError(response as unknown as ErrorResponse<BigGoAuthErrorEnum>)
+        if(this.#onAuthenticationError) {
+          return this.#onAuthenticationError?.(error)
+        }
+
+        throw error
+      }
+
+      throw new Error(response.error === "invalid_request" ? "BigGo verify error: invalid credential" : response.error)
     }
 
     this.#token = response.access_token
@@ -99,18 +119,29 @@ export class BigGoJWTClient extends HttpClient {
     params.extraHeaders["Authorization"] = `${this.getTokenType()} ${await this.getToken()}`
 
     try {
-      return await super.request<T>(params)
+      const response = await super.request<T>(params)
+      this.#errorRetry = 0
+      return response
     } catch(error: any) {
       if(!(error instanceof BigGoAPIError)) {
         throw error
       }
 
-      switch((error as BigGoAPIError).code) {
+      const getGeneralError = () => new Error(`BigGo JWT Client error: ${error.message}`)
+      switch((error as BigGoAPIError<BigGoAPIErrorEnum>).code) {
+        // jwt token expired
         case BigGoAPIErrorEnum.JWT_EXPIRED:
+          if(this.#errorRetry >= BigGoJWTClient.RETRY_LIMIT) {
+            throw getGeneralError()
+          }
+
           await this.renew()
+          this.#errorRetry++
           return super.request<T>(params)
+
+        // jwt token is invalid
         case BigGoAPIErrorEnum.JWT_INVALID:
-          throw new Error("BigGo JWT Client error: invalid client credential")
+          throw getGeneralError()
       }
 
       throw error

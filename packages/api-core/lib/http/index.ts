@@ -1,4 +1,5 @@
 import { BigGoAPIError } from "../error"
+import { BigGoUnionErrorEnum } from "../error/types"
 import ProcessedQuery from "../util/processed-query"
 import { DataType, DeleteRequestParams, ErrorResponse, GetRequestParams, Method, NormalizedRequest, PatchRequestParams, PostRequestParams, PutRequestParams, RequestParams, RequestReturn, RESTClient } from "./types"
 
@@ -89,9 +90,6 @@ export class HttpClient extends AbstractHttpClient {
             body = form as unknown as globalThis.FormData
             break
         }
-        headers = {
-          ...headers,
-        }
 
         if(type !== DataType.MultipartFormData) {
           headers["Content-Type"] = type!
@@ -134,20 +132,11 @@ export class HttpClient extends AbstractHttpClient {
       headers
     })
 
-    let body: { [key: string]: string } | string | T = {}
-    let content = await response.text()
-    if (content) {
-      try {
-        body = JSON.parse(content)
-      } catch (error) {
-        body = content
-      }
-    }
-
+    const body: { [key: string]: string } | string | T = await response.json().catch(() => response.text())
     if (typeof body === "object" && "error" in (body as any)) {
-      throw new BigGoAPIError(body as ErrorResponse)
+      throw new BigGoAPIError(body as ErrorResponse<BigGoUnionErrorEnum>)
     } else if (!response.ok) {
-      throw new Error("BigGo API Error")
+      throw new Error("BigGo API Unknown Error")
     }
 
     return {

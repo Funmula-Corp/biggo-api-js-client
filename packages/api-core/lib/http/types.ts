@@ -1,4 +1,5 @@
 import { BigGoAPIErrorEnum } from "../error"
+import { BigGoUnionErrorEnum } from "../error/types"
 
 export enum Method {
   Get = "GET",
@@ -60,15 +61,15 @@ export interface NormalizedRequest {
   body?: string | FormData
 }
 
-export type ErrorResponse = {
+export type ErrorResponse<E extends BigGoUnionErrorEnum> = {
   result: false
   error: {
-    code: BigGoAPIErrorEnum,
+    code: E,
     message: string
   }
 }
 
-export type BaseResponse = { result: true } | ErrorResponse
+export type BaseResponse = { result: true } | ErrorResponse<BigGoAPIErrorEnum>
 
 export interface RequestReturn<T = unknown> {
   body: T
