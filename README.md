@@ -1,5 +1,13 @@
 # BigGo API Javascript Client
 
+<p>
+
+![npm](https://img.shields.io/npm/v/biggo-api)
+![NPM](https://img.shields.io/npm/l/biggo-api)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Funmula-Corp/biggo-api-js-client/build-test.yml)
+
+</p>
+
 BigGo API Javascript Client is a video API written in Javascript. We have two APIs included so far and will update more APIs and the function in each of them in the short future:
 
 - [Getting Started](#getting-started)
