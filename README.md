@@ -51,14 +51,18 @@ const { auth, api } = require("biggo-api")
 
 ### Initializing Auth Client
 
-To get started, first obtain an API key and secret from BigGo API. Then, use the following code to obtain an API client:
+To get started, first obtain a client id and secret from BigGo API. Then, use the following code to obtain an API client:
 
 ```js
 const client = auth.getJWTClient({
-  client_id: "<api key>",
-  client_secret: "<api secret>"
+  client_id: "<client id>",
+  client_secret: "<client secret>"
 })
 ```
+
+You can refer to this guide to get the client id and secret
+
+[Funmula/guideFunmula-Corp/guide](https://github.com/Funmula-Corp/guide)
 
 ### Accessing BigGo API
 
