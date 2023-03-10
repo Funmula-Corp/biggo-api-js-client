@@ -62,7 +62,7 @@ const client = auth.getJWTClient({
 
 You can refer to this guide to get the client id and secret
 
-[Funmula/guideFunmula-Corp/guide](https://github.com/Funmula-Corp/guide)
+[Funmula-Corp/guide](https://github.com/Funmula-Corp/guide)
 
 ### Accessing BigGo API
 
