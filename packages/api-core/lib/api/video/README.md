@@ -8,8 +8,8 @@ To get started, first obtain an API key and secret from BigGo API. Then, use the
 import { auth, api } from "biggo-api"
 
 const client = auth.getJWTClient({
-  client_id: "<api key>",
-  client_secret: "<api secret>"
+  client_id: "<client id>",
+  client_secret: "<client secret>"
 })
 
 const video = api.video({ client })
