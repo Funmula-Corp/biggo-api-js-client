@@ -1,6 +1,6 @@
 {
   "name": "biggo-api",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "biggo api client for node js",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

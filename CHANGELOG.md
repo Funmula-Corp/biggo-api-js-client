@@ -1,3 +1,11 @@
+# [v0.4.0]
+
+first release version
+
+## Feat
+
+- add auth type error
+
 # [v0.3.1]
 
 ## Changes
