@@ -1,7 +1,7 @@
 {
   "name": "biggo-api",
   "version": "0.4.0",
-  "description": "biggo api client for node js",
+  "description": "BigGo API Javascript Client is a video API written in Javascript.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "repository": "github:Funmula-Corp/biggo-api-js-client",
@@ -10,11 +10,6 @@
       "require": "./lib/index.js",
       "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
-    },
-    "./api/*": {
-      "require": "./lib/api/*/index.js",
-      "types": "./lib/api/*/index.d.ts",
-      "import": "./lib/api/*/index.js"
     },
     "./auth/*": {
       "require": "./lib/auth/*/index.js",
