@@ -2,7 +2,7 @@
 
 <p>
 
-![npm](https://img.shields.io/npm/v/biggo-api)
+[![npm](https://img.shields.io/npm/v/biggo-api)](https://www.npmjs.com/package/biggo-api?activeTab=readme)
 ![NPM](https://img.shields.io/npm/l/biggo-api)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Funmula-Corp/biggo-api-js-client/build-test.yml)
 
