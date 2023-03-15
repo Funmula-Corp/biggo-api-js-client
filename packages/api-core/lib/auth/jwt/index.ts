@@ -32,7 +32,7 @@ export class BigGoJWTClient extends HttpClient {
     return this
   }
 
-  public onAUthenticationError(f: (error: BigGoAPIError<BigGoAuthErrorEnum>) => void): this {
+  public onAuthenticationError(f: (error: BigGoAPIError<BigGoAuthErrorEnum>) => void): this {
     this.#onAuthenticationError = f
     return this
   }
