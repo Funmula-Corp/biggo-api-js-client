@@ -1,3 +1,9 @@
+# [v0.4.1]
+
+## Perf
+
+- improve error log
+
 # [v0.4.0]
 
 first release version

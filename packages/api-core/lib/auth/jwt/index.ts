@@ -127,12 +127,12 @@ export class BigGoJWTClient extends HttpClient {
         throw error
       }
 
-      const getGeneralError = () => new Error(`BigGo JWT Client error: ${error.message}`)
+      const getGeneralError = (code: string) => new Error(`BigGo JWT Client error: ${error.message} code ${code}`)
       switch((error as BigGoAPIError<BigGoAPIErrorEnum>).code) {
         // jwt token expired
         case BigGoAPIErrorEnum.JWT_EXPIRED:
           if(this.#errorRetry >= BigGoJWTClient.RETRY_LIMIT) {
-            throw getGeneralError()
+            throw getGeneralError(error.code)
           }
 
           await this.renew()
@@ -141,7 +141,7 @@ export class BigGoJWTClient extends HttpClient {
 
         // jwt token is invalid
         case BigGoAPIErrorEnum.JWT_INVALID:
-          throw getGeneralError()
+          throw getGeneralError(error.code)
       }
 
       throw error

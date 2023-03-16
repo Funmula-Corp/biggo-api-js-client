@@ -143,22 +143,22 @@ export class APIVideoClient extends APIClient {
 
     switch(error.code) {
       case BigGoAPIErrorEnum.VIDEO_DIFFERENT_USER:
-        devWarn("different user")
+        devWarn(`different user. code ${error.code}`)
         break
       case BigGoAPIErrorEnum.VIDEO_DELETED:
-        devWarn("video deleted")
+        devWarn(`video deleted. code ${error.code}`)
         break
       case BigGoAPIErrorEnum.VIDEO_NOT_EXIST:
-        devWarn("video not exist")
+        devWarn(`video not exist. code ${error.code}`)
         break
       case BigGoAPIErrorEnum.VIDEO_PARAMETER_INVALID:
-        devWarn("video parameter invalid")
+        devWarn(`video parameter invalid. code ${error.code}`)
         break
       case BigGoAPIErrorEnum.VIDEO_UPLOAD_PRODUCT_IS_NOT_EXIST:
-        devWarn("Product is not exist.")
+        devWarn(`Product is not exist. code ${error.code}`)
         break
       case BigGoAPIErrorEnum.VIDEO_UPLOAD_PRODUCT_LIST_OVER_LIMIT:
-        devWarn("The product list includes over 10 items.")
+        devWarn(`The product list includes over 10 items. code ${error.code}`)
         break
     }
 
