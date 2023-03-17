@@ -10,9 +10,6 @@ interface CollectData<T> {
 
 
 interface APICollectInit<T> {
-  /**
-   * A function that returns a promise containing collect data.
-   */
   dataGetter(page: number): Promise<CollectData<T>>
 }
 
