@@ -57,6 +57,10 @@ export class HttpClient extends AbstractHttpClient {
     this.hostname = hostname
   }
 
+  /**
+   * Implements abstract request method defined in AbstractHttpClient class.
+   * Makes an HTTP request using parameters provided in params.
+   */
   protected async request<T = unknown>(params: RequestParams): Promise<RequestReturn<T>> {
     let headers: typeof params.extraHeaders = { ...params.extraHeaders }
     let body
@@ -108,10 +112,16 @@ export class HttpClient extends AbstractHttpClient {
     return await this.doRequest<T>(request)
   }
 
+  /**
+   * Extracts a path part from URL provided in path.
+   */
   protected getRequestPath(path: string): string {
     return `/${path.replace(/^\//, "")}`
   }
 
+  /**
+   * Normalizes the header passed as a string or string[] to be compatible with Headers objects.
+   */
   private getHeader(headers: Record<string, string|string[]>) {
     const h = new this.Headers()
     Object.keys(headers).forEach(k => {
@@ -124,6 +134,9 @@ export class HttpClient extends AbstractHttpClient {
     return h
   }
 
+  /**
+   * Executes HTTP request represented by NormalizedRequest object and handles response.
+   */
   private async doRequest<T = unknown>(request: NormalizedRequest): Promise<RequestReturn<T>> {
     const headers = this.getHeader(request.headers)
     const response = await this.fetch(request.url, {
