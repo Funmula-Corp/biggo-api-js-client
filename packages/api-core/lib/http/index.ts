@@ -48,7 +48,7 @@ export class AbstractHttpClient implements RESTClient {
 
 export class HttpClient extends AbstractHttpClient {
   readonly hostname: string
-  readonly fetch: typeof fetch = globalThis.fetch
+  readonly fetch: typeof fetch = globalThis.fetch && globalThis.fetch.bind(globalThis) || globalThis.fetch
   readonly Headers: typeof Headers = globalThis.Headers
   readonly FormData: typeof FormData = globalThis.FormData
 
@@ -142,7 +142,7 @@ export class HttpClient extends AbstractHttpClient {
     const response = await this.fetch(request.url, {
       ...request,
       body: request.body as string,
-      headers
+      headers,
     })
 
     const body: { [key: string]: string } | string | T = await response.json().catch(() => response.text())
