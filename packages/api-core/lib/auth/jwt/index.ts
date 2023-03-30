@@ -17,7 +17,7 @@ export class BigGoJWTClient extends HttpClient {
   #errorRetry: number = 0
   static RETRY_LIMIT = 3
 
-  #onTokenUpdate: (token: string) => void = () => {}
+  #onTokenUpdate: (token: string, expire: number) => void = () => {}
   #onAuthenticationError?: (error: BigGoAPIError<BigGoAuthErrorEnum>) => void
 
   constructor({ client_id, client_secret, ...param }: BigGoJWTClientInitialParams) {
@@ -30,7 +30,7 @@ export class BigGoJWTClient extends HttpClient {
   /**
    * a function to be called when the token is updated. The provided function will receive the new token as an argument.
    */
-  public onTokenUpdate(f: (token: string) => void): this {
+  public onTokenUpdate(f: (token: string, expire: number) => void): this {
     this.#onTokenUpdate = f
     return this
   }
@@ -62,8 +62,9 @@ export class BigGoJWTClient extends HttpClient {
   /**
    * sets the current token for the class. It returns the instance of the class itself, to allow method chaining.
    */
-  public token(t: string): this {
+  public token(t: string, expire: number = 0): this {
     this.#token = t
+    this.#tokenExpires = +expire
     return this
   }
 
@@ -127,7 +128,7 @@ export class BigGoJWTClient extends HttpClient {
     this.#token = response.access_token
     this.#tokenType = response.token_type
     this.#tokenExpires = response.expires_in + (Date.now() / 1000)
-    this.#onTokenUpdate(this.#token)
+    this.#onTokenUpdate(this.#token, this.#tokenExpires)
   }
 
   /**
