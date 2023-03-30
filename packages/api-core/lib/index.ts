@@ -5,3 +5,6 @@ export * as auth from "./auth"
 
 // enum
 export { VideoVisibility, VideoProcessStatus } from "./api/video/types"
+
+// adapter
+export { implGetUploadFileBody, implGetFileSize } from "./api/video/runtime"

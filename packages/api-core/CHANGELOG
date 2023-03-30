@@ -1,3 +1,11 @@
+# v1.2.0
+
+## Changes
+
+- video api client updateUploadedFile method make public
+- Strip out the parts that use the nodejs api
+- refactor some method
+
 # v1.1.0
 
 ## Feat
