@@ -4,6 +4,10 @@
 
 - improve error log
 
+## Changes
+
+- add adapter to implement api-core fetch
+
 # [v0.4.0]
 
 first release version
