@@ -43,8 +43,7 @@ Upload new video.
 video.upload({
   file: "<video file path>",
   description: "upload via api",
-  access: "everyone",
-  products: [],
+  access: "public",
   thumbnailTime: 0,
 })
 ```
@@ -72,8 +71,7 @@ Update video info.
 ```js
 video.update("<video id>", {
   description: "upload via api",
-  access: "everyone",
-  products: [],
+  access: "public",
   thumbnailTime: 0,
 })
 ```
