@@ -145,7 +145,12 @@ export class HttpClient extends AbstractHttpClient {
       headers,
     })
 
-    const body: { [key: string]: string } | string | T = await response.json().catch(() => response.text())
+    let body: { [key: string]: string } | string | T = await response.text()
+
+    try {
+      body = JSON.parse(body)
+    }catch(e) {}
+
     if (typeof body === "object" && "error" in (body as any)) {
       throw new BigGoAPIError(body as ErrorResponse<BigGoUnionErrorEnum>)
     } else if (!response.ok) {
